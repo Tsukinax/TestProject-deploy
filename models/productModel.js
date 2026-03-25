@@ -13,6 +13,7 @@ const Product = {
             [Number(limit), Number(offset)]
         );
         return rows;
+        
     },
 
     // Get a single product by ID for the details page
