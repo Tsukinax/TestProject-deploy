@@ -1,26 +1,16 @@
 version: '3.8'
 
 services:
-  # The Node.js Web Application
   web:
     build: .
     ports:
       - "3000:3000"
-    # Mount the local directory to /app in the container for live reloading during development
-    volumes:
-      - ./:/app
-      - /app/node_modules # Prevent local node_modules from overwriting the container's initialized node_modules
-    # Environment variables are passed from your existing .env file
     env_file:
       - .env
-    # We use nodemon for hot-reloading during development
-    command: sh -c "npm install -g nodemon && nodemon app.js"
     depends_on:
-      db:
-        condition: service_healthy # Wait for the DB to be fully ready before starting the web app
-        restart: unless-stopped
+      - db
+    restart: unless-stopped
 
-  # The MySQL Database
   db:
     image: mysql:8.0
     ports:
@@ -29,18 +19,14 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: bookstore
     volumes:
-      # This makes the database persistent even if the container is restarted
       - db_data:/var/lib/mysql
-      # Map the local 'sql' folder so initialization scripts run when the DB is created for the FIRST time
       - ./sql:/docker-entrypoint-initdb.d
-    # Healthcheck to ensure the database is actually ready to accept connections before the web app starts
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
-      restart: unless-stopped
+    restart: unless-stopped
 
 volumes:
-  # Named volume for database persistence
   db_data:
