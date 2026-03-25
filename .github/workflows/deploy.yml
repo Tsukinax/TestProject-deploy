@@ -74,6 +74,7 @@ jobs:
             fi
             
             
+
             docker-compose -p project_$BRANCH_NAME down || true
             docker-compose -p project_$BRANCH_NAME pull
             docker-compose -p project_$BRANCH_NAME up -d
