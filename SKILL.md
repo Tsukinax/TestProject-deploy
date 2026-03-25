@@ -48,6 +48,7 @@ Workflow จะ trigger เมื่อมีการ push ไปที่ main
 5.2 Deploy ครั้งถัดไป
 เพียงแค่ push code ขึ้น GitHub และ GitHub Action จะ deploy ให้อัตโนมัติ
 
+
 5.3 เข้าถึงเว็บ
 •	main branch: http://<EC2_IP>:3000
 •	develop branch: http://<EC2_IP>:3001
