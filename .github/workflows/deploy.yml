@@ -73,6 +73,7 @@ jobs:
               sed -i 's/"3306:3306"/"3307:3306"/g' docker-compose.yml
             fi
             
+            
             docker-compose -p project_$BRANCH_NAME down || true
             docker-compose -p project_$BRANCH_NAME pull
             docker-compose -p project_$BRANCH_NAME up -d
