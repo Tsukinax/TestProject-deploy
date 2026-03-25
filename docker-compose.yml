@@ -16,7 +16,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: hush2548
       MYSQL_DATABASE: bookstore
     volumes:
       - db_data:/var/lib/mysql
