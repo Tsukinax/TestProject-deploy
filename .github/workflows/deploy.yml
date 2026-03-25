@@ -40,7 +40,15 @@ jobs:
           mkdir -p deploy
           cp docker-compose.yml deploy/
           cp -r sql deploy/
-          cp .env deploy/
+
+          # สร้าง .env จาก secrets แทนการ copy จาก repo security
+          cat <<EOF > deploy/.env
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          PORT=3000
+          EOF
 
       - name: Copy deployment files via SCP
         uses: appleboy/scp-action@v0.1.7

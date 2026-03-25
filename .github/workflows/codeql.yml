@@ -28,8 +28,16 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
+        # เพิ่ม query suites เพื่อให้ scan จริงจังขึ้น
+        queries: security-extended,security-and-quality
+
+    #  Autobuild จำเป็นสำหรับให้ CodeQL วิเคราะห์ source จริง
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
+        # upload ผลไป GitHub Security tab จริงๆ
+        upload: true
