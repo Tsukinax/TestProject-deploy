@@ -36,11 +36,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Prepare deployment files
-run: |
-    mkdir -p deploy
-    cp docker-compose.yml deploy/
-    cp -r sql deploy/
-    cp .env deploy/
+        run: |
+          mkdir -p deploy
+          cp docker-compose.yml deploy/
+          cp -r sql deploy/
+          cp .env deploy/
 
       - name: Copy deployment files via SCP
         uses: appleboy/scp-action@v0.1.7
@@ -64,17 +64,15 @@ run: |
             BRANCH_NAME=${{ github.ref_name }}
             APP_DIR=~/app_$BRANCH_NAME
             cd $APP_DIR
-            
+
             export APP_IMAGE=${{ secrets.DOCKER_HUB_USERNAME }}/termproject:$BRANCH_NAME
-            
+
             sed -i "s|build: .|image: $APP_IMAGE|g" docker-compose.yml
-            
+
             if [ "$BRANCH_NAME" = "develop" ]; then
               sed -i 's/"3000:3000"/"3001:3000"/g' docker-compose.yml
               sed -i 's/"3306:3306"/"3307:3306"/g' docker-compose.yml
             fi
-            
-
 
             docker-compose -p project_$BRANCH_NAME down || true
             docker-compose -p project_$BRANCH_NAME pull
